@@ -1,0 +1,25 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Associate Member</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Associate Member</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>All Users</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let user of activeUser">
+      <ion-avatar>
+        <img src="https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png" />
+      </ion-avatar>
+      <ion-label class="ion-margin-start"> {{user.name}} </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

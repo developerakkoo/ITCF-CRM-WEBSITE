@@ -8,6 +8,33 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class FolderPage implements OnInit {
   public folder!: string;
+
+  userCount:string = "100";
+  teamCount:string = "100";
+  professionalMemberCount: string = "100";
+  subjectMatterCount: string = "100";
+
+
+  activeUser:any[] = [
+    {
+      "name": "Aksahy"
+    },
+    {
+      "name": "Aksahy"
+    },
+    {
+      "name": "Aksahy"
+    },
+    {
+      "name": "Aksahy"
+    },
+    {
+      "name": "Aksahy"
+    },
+    {
+      "name": "Aksahy"
+    },
+  ]
   private activatedRoute = inject(ActivatedRoute);
   constructor() {}
 
