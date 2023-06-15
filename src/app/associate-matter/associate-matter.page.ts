@@ -11,24 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AssociateMatterPage implements OnInit {
   activeUser:any[] = [
-    {
-      "name": "Aksahy"
-    },
-    {
-      "name": "Aksahy"
-    },
-    {
-      "name": "Aksahy"
-    },
-    {
-      "name": "Aksahy"
-    },
-    {
-      "name": "Aksahy"
-    },
-    {
-      "name": "Aksahy"
-    },
+   
   ]
 
   getUserSub!: Subscription;
@@ -39,8 +22,21 @@ export class AssociateMatterPage implements OnInit {
   ngOnInit() {
   }
 
+  ionViewDidEnter(){
+    this.getAllMember();
+  }
   getAllMember(){
-    
+    this.http.get(environment.API + "/getAll/associateMember")
+    .subscribe({
+      next:(value:any) =>{
+        console.log(value);
+        this.activeUser = value['associateMember'];
+      },
+      error:(error:any) =>{
+        console.log(error);
+        
+      }
+    })
   }
 
   goToDetails(id:any){
