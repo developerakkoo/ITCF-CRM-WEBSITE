@@ -10,4 +10,43 @@
       <ion-title size="large">details</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <form [formGroup]="userForm">
+    <ion-item>
+      <ion-label position="stacked">First Name</ion-label>
+      <ion-input formControlName="fName" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Last Name</ion-label>
+      <ion-input formControlName="lName" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Date of Birth</ion-label>
+      <ion-input formControlName="DOB" type="date"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Phone</ion-label>
+      <ion-input formControlName="Phone" type="tel"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Skills</ion-label>
+      <ion-input formControlName="Skills" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">UID</ion-label>
+      <ion-input formControlName="UID" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Age</ion-label>
+      <ion-input formControlName="age" type="number"></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" (click)="submitForm()">Submit</ion-button>
+  </form>
 </ion-content>

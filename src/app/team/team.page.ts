@@ -42,7 +42,7 @@ export class TeamPage implements OnInit {
   }
 
   goToDetails(id:any){
-    this.router.navigate(['associate-matter', 'details', id]);
+    this.router.navigate(['team', 'details', id]);
   }
 
 }
