@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
+import { DataService } from 'src/app/data.service';
 import { environment } from 'src/environments/environment';
 interface User {
   AdharCard: string;
@@ -35,12 +37,15 @@ interface User {
 
 export class DetailsPage implements OnInit {
 
+  adminId:any;
   userId:any;
   user: User = {} as User;
   userForm!:FormGroup;
   constructor(private http: HttpClient,
               private router: Router,
               private fb : FormBuilder,
+              private data: DataService,
+              private loadingController: LoadingController,
               private route: ActivatedRoute) { 
                 this.userId = this.route.snapshot.paramMap.get("id");
                 this.userForm = this.fb.group({
@@ -63,8 +68,10 @@ export class DetailsPage implements OnInit {
 
               }
 
-  ngOnInit() {
-
+  async ngOnInit() {
+    this.adminId = await this.data.get("adminId");
+    console.log(`details adminId ${this.adminId}`);
+    
   }
 
   ionViewWillLoad(){
@@ -72,6 +79,12 @@ export class DetailsPage implements OnInit {
   }
 
 
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Loading...',
+    });
+    await loading.present();
+  }
   generatePassword() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*!';
     let password = '';
@@ -83,6 +96,7 @@ export class DetailsPage implements OnInit {
     this.userForm.get('password')!.setValue(password);
   }
   getAllDetails(userId:any){
+    this.presentLoading();
     this.http.get<User>(environment.API +`/getById/associateMember/${userId}`)
     .subscribe({
       next:(user:any) => {
@@ -99,11 +113,12 @@ export class DetailsPage implements OnInit {
         this.userForm.get('OfficeAddress')!.setValue(this.user.OfficeAddress);
         this.userForm.get('DOB')!.setValue(this.user.DOB);
         this.userForm.get('CricketingExperience')!.setValue(this.user.CricketingExperience);
-        
+        this.loadingController.dismiss();
         
       },
       error:(err) =>{
         console.log(err);
+        this.loadingController.dismiss();
         
       }
     })
@@ -114,12 +129,48 @@ export class DetailsPage implements OnInit {
 
   }
 
+
+  updatePassword(){
+    this.presentLoading();
+    this.http.put(environment.API + `/add/credential/${this.adminId}`,{
+      userId: this.user._id,
+      password: this.userForm.value.password
+    }).subscribe({
+      next:(value:any) =>{
+        console.log(value);
+        this.loadingController.dismiss();
+        
+      },
+
+      error:(error) =>{
+        console.log(error);
+        this.loadingController.dismiss();
+        
+      }
+    })
+  }
   submitForm() {
     if (this.userForm.valid) {
       // Perform any necessary form submission logic here
       console.log(this.userForm.value);
-      ///update/associateMember/
-      
+      ///update/associateMember/:id
+      let obj = {
+        ...this.userForm.value
+      }
+      this.presentLoading();
+        this.http.put(environment.API +`/update/associateMember/${this.userId}`, obj)
+        .subscribe({
+          next:(value:any) =>{
+            console.log(value);
+            this.getAllDetails(this.userId)
+            
+          },
+          error:(error) =>{
+            console.log(error);
+        this.loadingController.dismiss();
+            
+          }
+        })     
     }
   }
   
